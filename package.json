@@ -1,0 +1,24 @@
+{
+  "name": "quadrigacx-bitcoin.tax",
+  "version": "0.0.1",
+  "description": "Quadriga API exporter to Bitcoin.tax csv format",
+  "main": "index.js",
+  "dependencies": {
+    "csvdata": "^1.4.0",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bbondy/quadrigacx-bitcoin.tax.git"
+  },
+  "author": "",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/bbondy/quadrigacx-bitcoin.tax/issues"
+  },
+  "homepage": "https://github.com/bbondy/quadrigacx-bitcoin.tax#readme"
+}
