@@ -30,8 +30,27 @@ Upload that file to bitcoin.tax csv format.
 
 Verify that the data is correct, and please either fix any issues you see or email me at bbondy@gmail.com for help.
 
-This is not tested yet so use at your own risk!
+
+## Summarizing capital gains reports
+
+
+As per [this resource on the Simple Tax site](https://help.simpletax.ca/questions/report-crypto-gains):
+
+"The CRA does not get a line-by-line breakdown through NETFILE, but may ask you to back up your amounts with records."
+
+From what I can tell there's no way to get Bitcoin.tax to give you a summary per asset class.
+
+Copy your capital gains detailed report from Bitcoin.tax to the cloned directory of this repo with a filename of `bitcointax_gains.csv`.
+
+run the following:
+
+`node capital_gains_summary.js`
+
+It will give you an output for each asset type with proceeds and cost basis. You can use that in 1 per line format in your capital gains taxes section.
+
 
 ## No Warranty
 
 I make no warranties over the accuracy or interpretation of Canadian tax laws.  Imported data is up to you to verify for accuracy.
+
+This is not tested yet so use at your own risk!
