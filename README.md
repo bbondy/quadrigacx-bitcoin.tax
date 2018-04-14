@@ -16,6 +16,11 @@ Run the following code in a terminal:
 git clone https://github.com/bbondy/quadrigacx-bitcoin.tax
 cd quadrigacx-bitcoin.tax
 npm install
+```
+
+Fill out secrets.js with an API key you can generate from the QuadrigaCX site.
+
+```
 node .
 ```
 
