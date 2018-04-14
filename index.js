@@ -46,7 +46,8 @@ const getBitcoinTaxCompatibleInfoFromQuadrigaCXInfo = (result) => {
   bitcoinTaxResult.fee = Number(result.fee || 0)
   if (bitcoinTaxResult.action === 'BUY') {
     bitcoinTaxResult.feeCurrency = bitcoinTaxResult.symbol
-    bitcoinTaxResult.volume = result[bitcoinTaxResult.symbol] || 0
+    // Add the fee since it'll be subtracted by bitcoin.tax
+    bitcoinTaxResult.volume = Number(result[bitcoinTaxResult.symbol] || 0) + bitcoinTaxResult.fee
   } else if (bitcoinTaxResult.action === 'SELL') {
     bitcoinTaxResult.feeCurrency = bitcoinTaxResult.currency
     bitcoinTaxResult.volume = (result[bitcoinTaxResult.symbol] || 0) * -1
