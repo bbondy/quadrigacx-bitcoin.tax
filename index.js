@@ -1,3 +1,6 @@
+const TAX_YEAR = 2017
+const RATE_LIMITER_TIMEOUT = 3000
+
 const secrets = require('./secrets')
 const assert = require('assert')
 const csvdata = require('csvdata')
@@ -77,14 +80,25 @@ const processNextQuadrigaSymbolPair = (accumulator = {
         if (result.action === 'FEE' && result.fee === 0) {
           return false;
         }
-        const key = JSON.stringify(result)
-        if (duplicateFeeChecker[key]) {
-          return false;
+        if (result.action === 'FEE') {
+          const key = JSON.stringify(result)
+          if (duplicateFeeChecker[key]) {
+            return false;
+          }
+          duplicateFeeChecker[key] = true
         }
-        duplicateFeeChecker[key] = true
         return true
       })
-    // console.log('done!', bitcoinTaxResults)
+      .filter((result) => new Date(result.date).getFullYear() === TAX_YEAR)
+      stats = bitcoinTaxResults.reduce((result, current) => {
+        if (current.symbol) {
+            result[current.symbol] = (result[current.symbol] || 0) + 1
+        } else if (current.action === 'FEE') {
+          result.fees = (result.fees || 0 ) + 1
+        }
+        return result
+      }, {})
+    console.log('stats: ', stats)
     csvdata.write('quadriga.csv', bitcoinTaxResults, {header: 'date,source,action,volume,symbol,currency,price,fee,feeCurrency'})
     return
   }
@@ -117,11 +131,14 @@ const processAllQuadrigaTransactionsForSymbolPair = (symbolPair, accumulator) =>
 const processNextQuadrigaTransactions = (symbolPair, accumulator, done) => {
   return getQuadrigaTransactions(secrets.quadriga, symbolPair, accumulator.current, accumulator.limit)
     .then((results) => {
+      console.log('Request for symbolpair: ', symbolPair +
+        ', result length: ', accumulator.results.length +
+        ', next index: ', accumulator.current)
       accumulator.results = accumulator.results.concat(results)
       accumulator.resultsThisTime = accumulator.resultsThisTime.concat(results)
       accumulator.current = accumulator.resultsThisTime.length
       if (results.length > 0) {
-        processNextQuadrigaTransactions(symbolPair, accumulator, done)
+        setTimeout(processNextQuadrigaTransactions.bind(null, symbolPair, accumulator, done), RATE_LIMITER_TIMEOUT)
       } else {
         done()
       }
