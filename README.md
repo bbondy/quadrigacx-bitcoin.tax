@@ -18,7 +18,7 @@ cd quadrigacx-bitcoin.tax
 npm install
 ```
 
-Fill out secrets.js with an API key you can generate from the QuadrigaCX site.
+Fill out secrets.js with an API key you can generate from the QuadrigaCX site.  Make sure the key can only do read only operations.
 
 ```
 node .
