@@ -19,6 +19,7 @@ npm install
 ```
 
 Fill out secrets.js with an API key you can generate from the QuadrigaCX site.  Make sure the key can only do read only operations.
+Modify index.js to specify which `TAX_YEAR` you'd like.
 
 ```
 node .
@@ -30,3 +31,7 @@ Upload that file to bitcoin.tax csv format.
 Verify that the data is correct, and please either fix any issues you see or email me at bbondy@gmail.com for help.
 
 This is not tested yet so use at your own risk!
+
+## No Warranty
+
+I make no warranties over the accuracy or interpretation of Canadian tax laws.  Imported data is up to you to verify for accuracy.
