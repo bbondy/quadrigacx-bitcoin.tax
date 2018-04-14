@@ -15,6 +15,7 @@ price (price per coin in Currency or blank for lookup - ignore if FEE)
 fee (any additional costs of the trade)
 feeCurrency (currency of fee if different than Currency)
 */
+
 const getBitcoinTaxCompatibleInfoFromQuadrigaCXInfo = (result) => {
   // Make a copy so we don't modify input data
   const bitcoinTaxResult = {}
@@ -66,12 +67,23 @@ const processNextQuadrigaSymbolPair = (accumulator = {
   results: [],
   symbolPairIndex: 0
 }) => {
-
+  const duplicateFeeChecker = {}
   const currentSymbolPair = quadrigaSymbolPairs[accumulator.symbolPairIndex]
   if (accumulator.symbolPairIndex >= quadrigaSymbolPairs.length) {
     const bitcoinTaxResults = accumulator.results
       .map(getBitcoinTaxCompatibleInfoFromQuadrigaCXInfo)
       .filter((result) => result.action !== 'FEE' || result.fee !== 0)
+      .filter((result) => {
+        if (result.action === 'FEE' && result.fee === 0) {
+          return false;
+        }
+        const key = JSON.stringify(result)
+        if (duplicateFeeChecker[key]) {
+          return false;
+        }
+        duplicateFeeChecker[key] = true
+        return true
+      })
     // console.log('done!', bitcoinTaxResults)
     csvdata.write('quadriga.csv', bitcoinTaxResults, {header: 'date,source,action,volume,symbol,currency,price,fee,feeCurrency'})
     return
